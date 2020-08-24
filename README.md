@@ -5,4 +5,4 @@ This Creates a Custom Bottom Navigation Bar with animated tile that moves below 
 
 
 
-![Demo of the Bottom Navigation Bar](demo/demo.gif)
+<img src="/images/output/video1.gif" width="108" height="216"/>
