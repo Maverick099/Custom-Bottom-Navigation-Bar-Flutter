@@ -10,39 +10,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Custom Bottom Navigation bar'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -50,68 +29,202 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        centerTitle: true,
+        elevation: 10.0,
+        leading: Icon(Icons.assistant),
+      ),
+      body: Stack(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: Colors.tealAccent,
+          ),
+          CustomBottomNavigationBar(),
+        ],
+      ),
+    );
+  }
+}
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+class CustomBottomNavigationBar extends StatefulWidget {
+  CustomBottomNavigationBarState createState() =>
+      CustomBottomNavigationBarState();
+}
+
+class CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
+  // Defining Page Index
+  int _index = 0;
+  //defining the global keys for BottomNavigation Bar Icons
+  GlobalKey _menuIconKey = GlobalKey();
+  GlobalKey _searchIconKey = GlobalKey();
+  GlobalKey _homeIconKey = GlobalKey();
+  GlobalKey _profileIconKey = GlobalKey();
+  // Defining the initial Position of the tile
+  Offset _tilePosition = Offset(258.0, 0.0);
+
+  _changePosition(int index) {
+    List<GlobalKey> _keyList = [
+      _menuIconKey,
+      _searchIconKey,
+      _homeIconKey,
+      _profileIconKey
+    ];
+    RenderBox _icon = _keyList[index].currentContext.findRenderObject();
+    Offset position = _icon.localToGlobal(Offset.zero);
+    _tilePosition = position;
+    _index = index;
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Stack(children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 72.0,
+          margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border:
+                Border.all(color: Colors.black.withOpacity(0.6), width: 0.5),
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20.0),
+              topLeft: Radius.circular(20.0),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.all(0.1),
+                height: 20.0,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.blue,
+                      Colors.blue.withOpacity(0.1),
+                      Colors.transparent,
+                    ],
+                    stops: [0.065, 0.32, 0.85],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(50.0),
+                    topLeft: Radius.circular(50.0),
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 45.0,
+                color: Colors.transparent,
+              ),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        AnimatedPositioned(
+          curve: Curves.easeIn,
+          duration: Duration(milliseconds: 300),
+          top: 0.0,
+          left: _tilePosition.dx + 0.0 - (22.5),
+          /// Aboves is the finer adjustment
+          /// so that you get tile excatly centered below the icon
+          child: Container(
+            margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+            width: 70.0,
+            height: 56.0,
+            decoration: BoxDecoration(
+              //color: Colors.red,
+              gradient: LinearGradient(
+                colors: [
+                  Colors.blue,
+                  Colors.lightBlue.withOpacity(0.2),
+                  Colors.transparent,
+                ],
+                stops: [0.05, 0.05, 0.65],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10.0),
+                bottomRight: Radius.circular(10.0),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            showSelectedLabels: false,
+            iconSize: 24.0,
+            selectedIconTheme: IconThemeData(color: Colors.blueAccent,size: 30.0),
+            currentIndex: _index,
+            elevation: 0.0,
+            onTap: (index) {
+              print(index);
+              _changePosition(index);
+            },
+            backgroundColor: Colors.transparent,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.menu,
+                  key: _menuIconKey,
+                ),
+                title: Text(
+                  'Menu',
+                  style: TextStyle(
+                  ),
+                ),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.search,
+                  key: _searchIconKey,
+                ),
+                title: Text(
+                  'Settings',
+                  style: TextStyle(
+                  ),
+                ),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  key: _homeIconKey,
+                ),
+                title: Text(
+                  'Home',
+                  style: TextStyle(
+                  ),
+                ),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person,
+                  key: _profileIconKey,
+                ),
+                title: Text(
+                  'profile',
+                  style: TextStyle(
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      ]),
     );
   }
 }
