@@ -144,7 +144,6 @@ class CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             width: 70.0,
             height: 56.0,
             decoration: BoxDecoration(
-              //color: Colors.red,
               gradient: LinearGradient(
                 colors: [
                   Colors.blue,
@@ -194,7 +193,7 @@ class CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                   key: _searchIconKey,
                 ),
                 title: Text(
-                  'Settings',
+                  'Serch',
                   style: TextStyle(
                   ),
                 ),
